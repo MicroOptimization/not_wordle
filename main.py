@@ -1,26 +1,37 @@
 from word_set import *
 import random
 
-#this definitely isn't wordle
-
-word_set = get_word_set()
-
-guesses_made = 0
-word = list(word_set)[random.randint(0, len(word_set) - 1)]
-
-cur_guess = ""
-while guesses_made < 6:
+def show_intro():
     print("This is definitely not Wordle.")
     print("Y: Right place Right letter")
     print("S: Wrong place Right letter")
     print("N: Wrong place Wrong letter")
     print("Now give me a 5 letter word")
     print()
-        cur_guess = input("enter guess #{}: ".format(guesses_made + 1))
+    
+def get_valid_guess():
+    cur_guess = input("Enter guess #{}: ".format(guesses_made + 1))
     while cur_guess not in word_set:
         cur_guess = input("invalid guess, try again: ")
+    return cur_guess
+
+def check_debug_flag(cur_guess):
+    return cur_guess == "debug"
+
+#this definitely isn't wordle
+
+word_set = get_word_set()
+word = list(word_set)[random.randint(0, len(word_set) - 1)]
+
+guesses_made = 0
+show_intro()
+
+while guesses_made < 6:    
+    cur_guess = get_valid_guess()
+
     
-    if cur_guess == "debug":
+    
+    if check_debug_flag(cur_guess):
         print(word)
         continue
     
