@@ -1,6 +1,8 @@
 from word_set import *
 import random
 
+#this definitely isn't wordle
+
 word_set = get_word_set()
 
 guesses_made = 0
