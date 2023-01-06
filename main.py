@@ -12,42 +12,23 @@ def show_intro():
 def get_valid_guess():
     cur_guess = input("Enter guess #{}: ".format(guesses_made + 1))
     while cur_guess not in word_set:
+        if cur_guess == debug_keyword:
+            break
         cur_guess = input("invalid guess, try again: ")
+        
     return cur_guess
 
 def check_debug_flag(cur_guess):
-    return cur_guess == "debug"
-
-#this definitely isn't wordle
-
-word_set = get_word_set()
-word = list(word_set)[random.randint(0, len(word_set) - 1)]
-
-guesses_made = 0
-show_intro()
-
-while guesses_made < 6:    
-    cur_guess = get_valid_guess()
-
-    
-    
-    if check_debug_flag(cur_guess):
-        print(word)
-        continue
-    
-    if cur_guess == word:
+    if cur_guess == debug_keyword:
+        print("Word: " , word)
         print()
-        print("you got it!")
-        break
-    else:
-        print("wrong!")
-    guesses_made += 1
+    return cur_guess == debug_keyword
 
-            
+def update_display(word, guess):
+    word_temp = list(word)
+    cur_guess = list(guess)
     
     display = ["X", "X", "X", "X", "X"]
-    word_temp = list(word)
-    cur_guess = list(cur_guess)
     
     for i in range(len(word_temp)):
         if word_temp[i] == cur_guess[i]:
@@ -61,8 +42,38 @@ while guesses_made < 6:
             cur_guess[i] = "$"
         elif display[i] == "X":
             display[i] = "N"
+    return display
+    
+def show_display(display):
     print(display)
     print()
+    
+#this definitely isn't wordle
+
+debug_keyword = "debugger"
+
+word_set = get_word_set()
+word = list(word_set)[random.randint(0, len(word_set) - 1)]
+
+guesses_made = 0
+show_intro()
+
+while guesses_made < 6:    
+    cur_guess = get_valid_guess()
+    
+    if check_debug_flag(cur_guess):
+        continue
+    
+    if cur_guess == word:
+        print()
+        print("you got it!")
+        break
+    else:
+        print("wrong!")
+    guesses_made += 1
+
+    display = update_display(word, cur_guess)
+    show_display(display)
     
 if guesses_made >= 6:
     print("you ran out of guesses!")
